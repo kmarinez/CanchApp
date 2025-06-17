@@ -3,97 +3,158 @@ import "../styles/styles.css";
 import logo from "../assets/Logo_CanchApp.svg";
 import { useAuth } from "../context/AuthContext";
 import Spinner from "../components/Spinner";
-import "../styles/styles.css";
+import { Eye, EyeOff } from "lucide-react";
+import { loginSchema, registerSchema } from "../validations/authSchema";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { LoginForm, RegisterForm } from "../types/authTypes";
+
+type FormValues = LoginForm & Partial<RegisterForm>;
 
 const LoginPage = () => {
   const { login } = useAuth();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Login:", { email, password });
-    setError(null);
+  const schema = isLogin ? loginSchema : registerSchema;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset
+  } = useForm<FormValues>({
+    resolver: yupResolver(schema),
+  })
+
+
+  const onSubmit = (data: any) => {
     setLoading(true);
-
-    // Aquí conectarías con tu backend
     setTimeout(() => {
       try {
-        const dummyResponse = {
-          message: "Inicio de sesión exitoso",
-          token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-          user: {
-            _id: "665f9f42792d8f4567abc123",
-            name: "Katerin Marinez",
-            email: "carlos@example.com",
-            role: "user",
-            isActive: true,
-          },
-          expiresIn: 900,
+        const dummyUser = {
+          _id: "abc123",
+          name: isLogin ? "Katerin Marinez" : `${data.name} ${data.lastName}`,
+          email: data.email,
+          role: "user",
+          isActive: true,
         };
-
-
-
-        login({ token: dummyResponse.token, user: dummyResponse.user });
-      } catch (err: any) {
-        setError("Error al simular el login");
+        login({ token: "TOKEN_DUMMY", user: dummyUser });
+        reset();
+      } catch {
+        alert("Error al procesar el formulario");
       } finally {
         setLoading(false);
       }
-    }, 1500); // 1.5 segundos de simulación
+    }, 1500);
   };
 
   return (
-
     <div className="login-container">
+      <div className="login-logo">
+        <img src={logo} alt="CanchApp logo" className="logo-image" />
+      </div>
+      <div className="login-card">
+        <h1 className="greatings">{isLogin ? "Bienvenido de nuevo" : "Crea tu cuenta"}</h1>
+        <h1 className="logo">canch<span className="logo-accent">App</span></h1>
+        <p className="subtitle">Bienvenido a tu espacio de juego.</p>
 
-      <div className="login-container">
-        <div className="login-logo">
-          <img src={logo} alt="CanchApp logo" className="logo-image" />
-        </div>
-        <div className="login-card">
-          <h1 className="logo">canch<span className="logo-accent">App</span></h1>
-          <p className="subtitle">Bienvenido a tu espacio de juego.</p>
+        <form onSubmit={handleSubmit(onSubmit)} className="login-form">
+          {!isLogin && (
+            <div className="inputsRow">
+              <div className="formGroup">
+                <label htmlFor="name">Nombre</label>
+                <input id="name" {...register("name")} placeholder="Timmy" />
+                {errors.name && <p className="error">{errors.name.message as string}</p>}
+              </div>
+              <div className="formGroup">
+                <label htmlFor="lastName">Apellido</label>
+                <input id="lastName" {...register("lastName")} placeholder="Memo" />
+                {errors.lastName && <p className="error">{errors.lastName.message}</p>}
+              </div>
+            </div>
+          )}
 
-          <form onSubmit={handleSubmit} className="login-form">
-            <label htmlFor="email">Correo electrónico</label>
-            <input
-              type="email"
-              id="email"
-              placeholder="correo@ejemplo.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+          <label htmlFor="email">Correo electrónico</label>
+          <input
+            id="email"
+            {...register("email")}
+            placeholder="correo@ejemplo.com"
+          />
+          {errors.email && <p className="error">{errors.email.message}</p>}
 
+          <div className="formGroup passwordGroup">
             <label htmlFor="password">Contraseña</label>
-            <input
-              type="password"
-              id="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="passwordWrapper">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                placeholder="••••••••"
+                {...register("password")}
+              />
+              <button
+                type="button"
+                className="togglePassword"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label="Mostrar u ocultar contraseña"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+            {errors.password && <p className="error">{errors.password.message}</p>}
+          </div>
 
-            <button type="submit" disabled={loading} className="btn-submit">
-              {loading ? (
-                <span className="btn-content">
-                  Iniciando...
-                  <Spinner small />
-                </span>
-              ) : (
-                "Iniciar sesión"
-              )}
-            </button>
-          </form>
+          {!isLogin && (
+            <div className="formGroup passwordGroup">
+              <label htmlFor="confirmPassword">Confirmar Contraseña</label>
+              <div className="passwordWrapper">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  id="confirmPassword"
+                  placeholder="••••••••"
+                  {...register("confirmPassword")}
+                />
+                <button
+                  type="button"
+                  className="togglePassword"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  aria-label="Mostrar u ocultar contraseña"
+                >
+                  {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+              {errors.confirmPassword && <p className="error">{errors.confirmPassword.message}</p>}
+            </div>
+          )}
 
-          <p className="register-link">
-            ¿No tienes cuenta? <a href="#">Regístrate</a>
-          </p>
+          <button type="submit" disabled={loading} className="btn-submit">
+            {loading ? (
+              <span className="btn-content">
+                {isLogin ? "Iniciando..." : "Registrando..."}
+                <Spinner small />
+              </span>
+            ) : (
+              isLogin ? "Iniciar sesión" : "Registrarse"
+            )}
+          </button>
+        </form>
+
+        <div>
+          <span className="register-link">
+            {isLogin ? "¿No tienes cuenta?" : "¿Ya tienes una cuenta?"}
+          </span>
+          <button
+            type="button"
+            className="btn-signUp"
+            onClick={() => {
+              setIsLogin(!isLogin);
+              reset();
+            }}
+          >
+            {isLogin ? "Regístrate" : "Inicia sesión"}
+          </button>
         </div>
       </div>
     </div>

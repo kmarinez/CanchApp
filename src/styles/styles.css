@@ -35,6 +35,12 @@ body {
     flex-direction: column;
     justify-content: center;
   }
+
+  .greatings {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #244633;
+  }
   
   .logo {
     font-size: 2rem;
@@ -79,6 +85,7 @@ body {
     cursor: pointer;
     transition: background-color 0.3s;
   }
+
   
   .btn-submit:disabled {
     opacity: 0.6;
@@ -113,10 +120,19 @@ body {
     margin-top: 1.5rem;
     font-size: 0.9rem;
   }
-  .register-link a {
-    color: #1E90FF;
+  .btn-signUp {
+    margin-top: 15px;
+    border: none;
+    color: #1cb179;;
     font-weight: 500;
     text-decoration: none;
+    width: auto;
+    background: none;
+  }
+
+  .btn-signUp:hover {
+    color: #2E8B57;
+    cursor: pointer;
   }
   
   .spinner {
@@ -141,3 +157,50 @@ body {
     100% { transform: rotate(360deg); }
   }
   
+  .formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    text-align: left;
+  }
+
+  .formGroup input {
+    display: flex;
+  }
+
+  .inputsRow {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .inputsRow .formGroup {
+    flex: 1;
+  }
+
+  .passwordWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .passwordWrapper input {
+    width: 100%;
+    padding-right: 2.5rem;
+  }
+  
+  .togglePassword {
+    position: absolute;
+    right: 0.75rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #666;
+  }
+
+  .error {
+    color: #E74C3C;
+    font-size: 0.875rem; 
+    margin-top: 4px;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
