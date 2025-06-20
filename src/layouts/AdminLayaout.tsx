@@ -1,17 +1,17 @@
-import { ReactNode } from "react";
-import { useAuth } from "../context/AuthContext";
+import React, { useState } from "react";
+import Sidebar from "../components/Sidebar";
+import Header from "../components/Header";
 
-const AdminLayout = ({ children }: { children: ReactNode }) => {
-  const { user, logout } = useAuth();
+const AdminLayout = ({ children }: { children: React.ReactNode }) => {
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div className="admin-layout">
-      <aside className="admin-sidebar">
-        <h2>Panel Admin</h2>
-        <p>{user?.name}</p>
-        <button onClick={logout}>Cerrar sesión</button>
-      </aside>
-      <main className="admin-main">{children}</main>
+    <div className={`admin-layout ${collapsed ? "collapsed" : ""}`}>
+      <Sidebar collapsed={collapsed} toggleSidebar={() => setCollapsed(!collapsed)} />
+      <div className="admin-main">
+        <Header />
+        <main className="admin-content">{children}</main>
+      </div>
     </div>
   );
 };

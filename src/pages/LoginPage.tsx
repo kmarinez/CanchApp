@@ -11,8 +11,17 @@ import { LoginForm, RegisterForm } from "../types/authTypes";
 
 type FormValues = LoginForm & Partial<RegisterForm>;
 
+function formatCedula(value: string): string {
+  const part1 = value.slice(0, 3);
+  const part2 = value.slice(3, 10);
+  const part3 = value.slice(10, 11);
+  return [part1, part2, part3].filter(Boolean).join("-");
+}
+
 const LoginPage = () => {
   const { login } = useAuth();
+
+  const [rawCedula, setRawCedula] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -23,6 +32,7 @@ const LoginPage = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
     reset
   } = useForm<FormValues>({
@@ -38,11 +48,12 @@ const LoginPage = () => {
           _id: "abc123",
           name: isLogin ? "Katerin Marinez" : `${data.name} ${data.lastName}`,
           email: data.email,
-          role: "user",
+          role: "admin",
           isActive: true,
         };
         login({ token: "TOKEN_DUMMY", user: dummyUser });
         reset();
+        setRawCedula("");
       } catch {
         alert("Error al procesar el formulario");
       } finally {
@@ -84,6 +95,26 @@ const LoginPage = () => {
             placeholder="correo@ejemplo.com"
           />
           {errors.email && <p className="error">{errors.email.message}</p>}
+
+          {!isLogin && (
+            <div className="inputsRow">
+              <div className="formGroup">
+                <label htmlFor="identificationNum">Cédula</label>
+                <input
+                  id="identificationNum"
+                  {...register("identificationNum")}
+                  value={formatCedula(rawCedula)}
+                  onChange={(e) => {
+                    const digitsOnly = e.target.value.replace(/\D/g, "").slice(0, 11);
+                    setRawCedula(digitsOnly);
+                    setValue("identificationNum", digitsOnly);
+                  }}
+                  placeholder="000-0000000-0"
+                />
+                {errors.identificationNum && <p className="error">{errors.identificationNum.message as string}</p>}
+              </div>
+            </div>
+          )}
 
           <div className="formGroup passwordGroup">
             <label htmlFor="password">Contraseña</label>
@@ -151,6 +182,7 @@ const LoginPage = () => {
             onClick={() => {
               setIsLogin(!isLogin);
               reset();
+              setRawCedula("");
             }}
           >
             {isLogin ? "Regístrate" : "Inicia sesión"}

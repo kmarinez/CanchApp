@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import dominicanIDValidation from "./dominicanIDValidation";
 
 export const loginSchema = yup.object({
     email: yup.string().email("Correo inválido").required("Correo requerido"),
@@ -10,8 +11,16 @@ export const registerSchema = yup.object({
     lastName: yup.string().required("Apellido requerido"),
     email: yup.string().email("Correo inválido").required("Correo requerido"),
     password: yup.string().min(6, "Mínimo 6 caracteres").required("Contraseña requerida"),
-    confirmPassword: yup
-        .string()
-        .oneOf([yup.ref("password")], "Las contraseñas no coinciden")
-        .required("Confirmación requerida"),
+    identificationNum: yup
+    .string()
+    .required("Número de identificación requerido")
+    .matches(/^\d{3}-?\d{7}-?\d{1}$/, "Formato de cédula no válido")
+    .test(
+      "valid-cedula",
+      "Número de identificación no válido",
+      (value) => {
+        const cleaned = value?.replace(/\D/g, "") || "";
+        return dominicanIDValidation(cleaned);
+      }
+    ),
 });
