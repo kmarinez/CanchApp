@@ -8,7 +8,7 @@ import { loginSchema, registerSchema } from "../validations/authSchema";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoginForm, RegisterForm } from "../types/authTypes";
-import { loginRequest, registerRequest } from "../services/authService";
+import { loginRequest, registerRequest } from "../services/auth/authService";
 import { toast } from "react-hot-toast";
 
 type FormValues = LoginForm & Partial<RegisterForm>;

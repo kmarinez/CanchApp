@@ -1,4 +1,4 @@
-import { LoginForm, RegisterForm } from "../types/authTypes";
+import { LoginForm, RegisterForm } from "../../types/authTypes";
 
 const API_URL = "http://localhost:4000/api/auth";
 

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCurrentUser } from "../services/authService";
+import { getCurrentUser } from "../services/auth/authService";
 
 interface User {
     id: string;

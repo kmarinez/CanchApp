@@ -9,6 +9,8 @@ import AdminLayout from '../layouts/AdminLayaout';
 import AdminCourtPage from '../pages/AdminCourtsPage';
 import PrivateRoutes from '../routes/PrivateRoute';
 import HomePage from '../pages/HomePage';
+import AdminUsersPage from '../pages/AdminUsersPage';
+import AdminReservationsPage from '../pages/AdminReservationsPage';
 
 function AppRoute() {
   return (
@@ -51,6 +53,26 @@ function AppRoute() {
           <PrivateRoutes allowedRoles={["admin", "staff"]}>
             <AdminLayout>
               <AdminCourtPage />
+            </AdminLayout>
+          </PrivateRoutes>
+        }
+      />
+      <Route
+        path="/usuarios"
+        element={
+          <PrivateRoutes allowedRoles={["admin", "staff"]}>
+            <AdminLayout>
+              <AdminUsersPage />
+            </AdminLayout>
+          </PrivateRoutes>
+        }
+      />
+      <Route
+        path="/reservas"
+        element={
+          <PrivateRoutes allowedRoles={["admin", "staff"]}>
+            <AdminLayout>
+              <AdminReservationsPage />
             </AdminLayout>
           </PrivateRoutes>
         }

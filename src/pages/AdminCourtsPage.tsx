@@ -2,53 +2,19 @@ import { useState } from "react"
 import { Court } from "../types/Court"
 import placeholder from "../assets/placeholder.png";
 import { BrushCleaning, Funnel, Pencil, PlusIcon, Search, Trash2, X } from "lucide-react"
+import { useCourts, useCreateCourt, useDeleteCourt, useUpdateCourt } from "../hooks/courts/useCourts";
+import { courtSchema } from "../validations/courtSchema";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { InferType } from "yup";
+
+type CourtFormValues = InferType<typeof courtSchema>;
 
 function AdminCourtPage() {
-    const [courts, setCourts] = useState<Court[]>(
-        [
-            {
-                isDeleted: false,
-                _id: "685861002dead9911c73677d",
-                courtName: "Cancha A",
-                type: "baloncesto",
-                location: "Edificio Norte",
-                indoorOrOutdoor: "techado",
-                playerCapacity: 10,
-                hourStartTime: "08:00",
-                hourEndTime: "22:00",
-                status: "activo",
-                hasLight: true,
-                description: "Cancha techada con iluminación LED",
-                operatingDays: [
-                    "lunes",
-                    "martes",
-                    "miércoles",
-                    "jueves",
-                    "viernes"
-                ]
-            },
-            {
-                _id: "685864f9d2220da975a7e11f",
-                courtName: "Cancha B",
-                type: "volleyball",
-                location: "Zona Norte",
-                indoorOrOutdoor: "destechado",
-                playerCapacity: 12,
-                hourStartTime: "08:00",
-                hourEndTime: "22:00",
-                status: "activo",
-                hasLight: true,
-                description: "Cancha con iluminación LED",
-                operatingDays: [
-                    "lunes",
-                    "martes",
-                    "miércoles",
-                    "jueves",
-                    "viernes"
-                ],
-                isDeleted: false,
-            }
-        ])
+    const { data: courts = [], isLoading } = useCourts();
+    const { mutate: deleteCourtMutation, isPending: isDeleting } = useDeleteCourt();
+    const { mutate: createCourtMutation, isPending: isCreating } = useCreateCourt();
+    const { mutate: updateCourtMutation, isPending: isUpdating } = useUpdateCourt();
 
     const courtTypes = ["baloncesto", "volleyball"]
     const daysOfWeek = ["lunes", "martes", "miércoles", "jueves", "viernes", "sabado", "domingo"]
@@ -63,6 +29,10 @@ function AdminCourtPage() {
     const [filterType, setFilterType] = useState("all")
     const [filterStatus, setFilterStatus] = useState("all")
 
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<CourtFormValues>({
+        resolver: yupResolver(courtSchema),
+    });
+
     const filteredCourts = courts.filter((court) => {
         const matchesSearch =
             court.courtName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -76,6 +46,19 @@ function AdminCourtPage() {
     const handleAddCourt = () => {
         setModalMode("add")
         setSelectedCourt(null)
+        reset({
+            courtName: "",
+            type: "" as any,  // si es enum, forzamos vacío
+            location: "",
+            indoorOrOutdoor: "" as any,
+            playerCapacity: 1,
+            hourStartTime: "08:00",
+            hourEndTime: "22:00",
+            status: "" as any,
+            hasLight: false,
+            description: "",
+            operatingDays: [],
+        });
         setShowModal(true)
     }
 
@@ -96,6 +79,20 @@ function AdminCourtPage() {
         setModalMode("edit")
         setSelectedCourt(court)
         setShowModal(true)
+        reset({
+            courtName: court.courtName,
+            type: court.type as 'baloncesto' | "volleyball",
+            location: court.location,
+            indoorOrOutdoor: court.indoorOrOutdoor as 'techado' | 'destechado',
+            playerCapacity: court.playerCapacity,
+            hourStartTime: court.hourStartTime,
+            hourEndTime: court.hourEndTime,
+            status: court.status as 'mantenimiento' | 'activo',
+            hasLight: court.hasLight,
+            description: court.description || "",
+            operatingDays: court.operatingDays,
+        });
+        setShowModal(true);
     }
 
     const handleDeleteCourt = (court: Court) => {
@@ -104,29 +101,30 @@ function AdminCourtPage() {
     }
 
 
-    const handleSubmitCourt = (formData: FormData) => {
-        const newCourt: Court = {
-            _id: Date.now().toString(), // o usa uuid si prefieres
-            courtName: formData.get("courtName") as string,
-            type: formData.get("type") as string,
-            location: formData.get("location") as string,
-            indoorOrOutdoor: formData.get("indoor") as Court["indoorOrOutdoor"],
-            playerCapacity: Number(formData.get("playerCapacity")),
-            hourStartTime: formData.get("hourStartTime") as string,
-            hourEndTime: formData.get("hourEndTime") as string,
-            status: formData.get("status") as Court["status"],
-            hasLight: formData.get("hasLight") === "on",
-            description: (formData.get("description") as string) || "",
-            operatingDays: formData.getAll("operatingDays") as string[],
-            isDeleted: false,
-        }
+    const onSubmit = (court: CourtFormValues) => {
+        const data: Partial<Court> = {
+            ...court,
+            operatingDays: court.operatingDays.filter(Boolean).filter((d): d is string => !!d),
+        };
 
         if (modalMode === "add") {
-            setCourts([...courts, newCourt])
+            createCourtMutation(data, {
+                onSuccess: () => {
+                    setShowModal(false);
+                    setSelectedCourt(null);
+                    reset();
+                },
+            });
         } else if (modalMode === "edit" && selectedCourt) {
-            setCourts(
-                courts.map((court) => (court._id === selectedCourt._id ? { ...newCourt, _id: selectedCourt._id } : court))
-            )
+            updateCourtMutation(
+                { id: selectedCourt._id, data },
+                {
+                    onSuccess: () => {
+                        setShowModal(false)
+                        setSelectedCourt(null)
+                        reset();
+                    },
+                });
         }
 
         setShowModal(false)
@@ -135,11 +133,17 @@ function AdminCourtPage() {
 
     const confirmDelete = () => {
         if (courtToDelete) {
-            setCourts(courts.filter((court) => court._id !== courtToDelete._id))
-            setShowDeleteModal(false)
-            setCourtToDelete(null)
+            deleteCourtMutation(courtToDelete._id, {
+                onSuccess: () => {
+                    setShowDeleteModal(false);
+                    setCourtToDelete(null);
+                },
+                onError: (error) => {
+                    console.log("Error eliminando la cancha", error)
+                }
+            });
         }
-    }
+    };
 
     const clearFilters = () => {
         setSearchTerm("")
@@ -198,11 +202,11 @@ function AdminCourtPage() {
                     </div>
 
                     <div className="filterGroup">
-                    <button onClick={clearFilters} className="cleanFilter">
-                        <BrushCleaning size={18}/>
-                        Limpiar filtros
-                    </button>
-                </div>
+                        <button onClick={clearFilters} className="cleanFilter">
+                            <BrushCleaning size={18} />
+                            Limpiar filtros
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -275,128 +279,120 @@ function AdminCourtPage() {
 
                         <form
                             className="modalForm"
-                            onSubmit={(e) => {
-                                e.preventDefault()
-                                handleSubmitCourt(new FormData(e.currentTarget))
-                            }}
+                            onSubmit={handleSubmit(onSubmit)}
                         >
                             <div className="formGrid">
                                 <div className="formGroup">
                                     <label className={"formLabel"}>Nombre Cancha *</label>
                                     <input
-                                        type="text"
-                                        name="courtName"
-                                        defaultValue={selectedCourt?.courtName || ""}
+                                        {...register("courtName")}
+                                        placeholder="Nombre"
                                         className="formInput"
-                                        required
                                     />
+                                    <p className="errorCourtForm">{errors.courtName?.message}</p>
                                 </div>
 
                                 <div className="formGroup">
                                     <label className="formLabel">Tipo Cancha *</label>
-                                    <select name="type" defaultValue={selectedCourt?.type || ""} className="formSelect" required>
-                                        <option value="">Select Type</option>
+                                    <select {...register("type")} className="formSelect">
+                                        <option value="">Seleccione una opción</option>
                                         {courtTypes.map((type) => (
                                             <option key={type} value={type}>
                                                 {type}
                                             </option>
                                         ))}
                                     </select>
+                                    <p className="errorCourtForm">{errors.type?.message}</p>
                                 </div>
 
                                 <div className="formGroup">
                                     <label className="formLabel">Locación *</label>
                                     <input
-                                        type="text"
-                                        name="location"
-                                        defaultValue={selectedCourt?.location || ""}
+                                        {...register("location")}
+                                        placeholder="Locación"
                                         className="formInput"
-                                        required
                                     />
+                                    <p className="errorCourtForm">{errors.location?.message}</p>
                                 </div>
 
                                 <div className="formGroup">
                                     <label className="formLabel">Techado/Destechado *</label>
                                     <select
-                                        name="indoor"
-                                        defaultValue={selectedCourt?.indoorOrOutdoor}
+                                        {...register("indoorOrOutdoor")}
                                         className="formSelect"
-                                        required
                                     >
-                                        <option value="Destechado">Destechado</option>
-                                        <option value="Techado">Techado</option>
+                                        <option value="">Seleccione una opción</option>
+                                        <option value="destechado">Destechado</option>
+                                        <option value="techado">Techado</option>
                                     </select>
+                                    <p className="errorCourtForm">{errors.indoorOrOutdoor?.message}</p>
                                 </div>
 
                                 <div className="formGroup">
                                     <label className="formLabel">Capacidad (jugadores) *</label>
                                     <input
                                         type="number"
-                                        name="playerCapacity"
-                                        min="1"
-                                        max="50"
-                                        defaultValue={selectedCourt?.playerCapacity || ""}
+                                        {...register("playerCapacity")}
+                                        placeholder="1"
                                         className="formInput"
-                                        required
                                     />
+                                    <p className="errorCourtForm">{errors.playerCapacity?.message}</p>
                                 </div>
 
                                 <div className="formGroup">
                                     <label className="formLabel">Hora Inicio *</label>
                                     <input
                                         type="time"
-                                        name="hourStartTime"
-                                        defaultValue={selectedCourt?.hourStartTime || "08:00"}
+                                        {...register("hourStartTime")}
                                         className="formInput"
-                                        required
                                     />
+                                    <p className="errorCourtForm">{errors.hourStartTime?.message}</p>
                                 </div>
 
                                 <div className="formGroup">
                                     <label className="formLabel">Hora Final *</label>
                                     <input
                                         type="time"
-                                        name="hourEndTime"
-                                        defaultValue={selectedCourt?.hourEndTime || "22:00"}
+                                        {...register("hourEndTime")}
                                         className="formInput"
-                                        required
                                     />
+                                    <p className="errorCourtForm">{errors.hourEndTime?.message}</p>
                                 </div>
 
                                 <div className="formGroup">
                                     <label className="formLabel">Estado *</label>
                                     <select
-                                        name="status"
-                                        defaultValue={selectedCourt?.status || "active"}
+                                        {...register("status")}
                                         className="formSelect"
-                                        required
                                     >
+                                        <option value="">Seleccione una opción</option>
                                         <option value="activo">Activo</option>
                                         <option value="mantenimiento">Mantenimiento</option>
                                     </select>
+                                    <p className="errorCourtForm">{errors.status?.message}</p>
                                 </div>
 
                                 <div className="formGroup">
                                     <label className="formLabel">
                                         <input
                                             type="checkbox"
-                                            name="hasLight"
-                                            defaultChecked={selectedCourt?.hasLight || false}
+                                            {...register("hasLight")}
                                             className="formCheckbox"
                                         />
                                         Tiene Luz
                                     </label>
+                                    <p className="errorCourtForm">{errors.hasLight?.message}</p>
                                 </div>
                             </div>
 
                             <div className="formGroup">
-                                <label className="formLabel">Descripción</label>
+                                <label className="formLabel">Descripción *</label>
                                 <textarea
-                                    name="description"
-                                    defaultValue={selectedCourt?.description || ""}
+                                    {...register("description")}
                                     className="formTextarea"
                                     rows={3}
                                 />
+                                <p className="errorCourtForm">{errors.description?.message}</p>
                             </div>
 
                             <div className="formGroup">
@@ -406,23 +402,26 @@ function AdminCourtPage() {
                                         <label key={day} className="checkboxLabel">
                                             <input
                                                 type="checkbox"
-                                                name="operatingDays"
                                                 value={day}
-                                                defaultChecked={selectedCourt?.operatingDays.includes(day) || false}
+                                                {...register("operatingDays")}
                                                 className="formCheckbox"
                                             />
                                             {day}
                                         </label>
                                     ))}
+                                    <p className="errorCourtForm">{errors.operatingDays?.message}</p>
                                 </div>
                             </div>
 
                             <div className="modalActions">
-                                <button type="button" className="cancelButton" onClick={() => setShowModal(false)}>
+                                <button type="button" className="cancelButton" disabled={isCreating} onClick={() => setShowModal(false)}>
                                     Cancelar
                                 </button>
-                                <button type="submit" className="submitButton">
-                                    {modalMode === "add" ? "Agregar" : "Actualizar"}
+                                <button type="submit" className="submitButton" disabled={isCreating}>
+                                    {modalMode === "add"
+                                        ? isCreating ? "Agregando..." : "Agregar"
+                                        : isUpdating ? "Actualizando" : "Actualizar"
+                                    }
                                 </button>
                             </div>
                         </form>
@@ -437,20 +436,29 @@ function AdminCourtPage() {
                         <div className="deleteModalContent">
                             <h3 className="deleteModalTitle">Eliminar Cancha</h3>
                             <p className="deleteModalText">
-                                Esta seguro que desea eliminar la cancha <strong>{courtToDelete.courtName}</strong>? Esta acción no es rebocable y puede afectar reservas activas.
+                                ¿Está seguro que desea eliminar la cancha <strong>{courtToDelete.courtName}</strong>? Esta acción no es reversible y puede afectar reservas activas.
                             </p>
-                            <div className={"deleteModalActions"}>
-                                <button className={"cancelButton"} onClick={() => setShowDeleteModal(false)}>
-                                    Cancel
+                            <div className="deleteModalActions">
+                                <button
+                                    className="cancelButton"
+                                    onClick={() => setShowDeleteModal(false)}
+                                    disabled={isDeleting}
+                                >
+                                    Cancelar
                                 </button>
-                                <button className={"confirmDeleteButton"} onClick={confirmDelete}>
-                                    Delete Court
+                                <button
+                                    className="confirmDeleteButton"
+                                    onClick={confirmDelete}
+                                    disabled={isDeleting}
+                                >
+                                    {isDeleting ? "Eliminando..." : "Eliminar Cancha"}
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
             )}
+
         </div>
     );
 };
