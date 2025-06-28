@@ -4,17 +4,17 @@ import { JSX } from "react";
 
 interface PrivateRouteProps {
     children: JSX.Element;
-    requiredRole?: "user" | "admin";
+    allowedRoles?: ("customer" | "admin" | "staff")[];
 }
 
-function PrivateRoutes({ children, requiredRole }: PrivateRouteProps) {
+function PrivateRoutes({ children, allowedRoles }: PrivateRouteProps) {
     const { isAuthenticated, user } = useAuth();
 
     if (!isAuthenticated) {
         return <Navigate to="/login" replace />;
     }
 
-    if (!user || user.role !== requiredRole) {
+    if (!user || (allowedRoles && !allowedRoles.includes(user.role))) {
         return <Navigate to="/not-authorized" replace />;
     }
 

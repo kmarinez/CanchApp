@@ -8,6 +8,8 @@ import { loginSchema, registerSchema } from "../validations/authSchema";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoginForm, RegisterForm } from "../types/authTypes";
+import { loginRequest, registerRequest } from "../services/authService";
+import { toast } from "react-hot-toast";
 
 type FormValues = LoginForm & Partial<RegisterForm>;
 
@@ -27,6 +29,7 @@ const LoginPage = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
+  const [wrongCredential, setWrongCredential] = useState(false);
 
   const schema = isLogin ? loginSchema : registerSchema;
   const {
@@ -40,26 +43,30 @@ const LoginPage = () => {
   })
 
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: LoginForm | RegisterForm) => {
     setLoading(true);
-    setTimeout(() => {
-      try {
-        const dummyUser = {
-          _id: "abc123",
-          name: isLogin ? "Katerin Marinez" : `${data.name} ${data.lastName}`,
-          email: data.email,
-          role: "admin",
-          isActive: true,
-        };
-        login({ token: "TOKEN_DUMMY", user: dummyUser });
-        reset();
-        setRawCedula("");
-      } catch {
-        alert("Error al procesar el formulario");
-      } finally {
-        setLoading(false);
+    setWrongCredential(false);
+    try {
+      if (isLogin) {
+        const res = await loginRequest({ email: data.email, password: data.password });
+        login({ token: "", user: res });
+      } else {
+        const res = await registerRequest(data as RegisterForm);
+        console.log("login", res);
+        login({ token: "", user: res });
       }
-    }, 1500);
+      reset();
+      setRawCedula("");
+    } catch (error: any) {
+      console.log("login", error)
+      let errorMessage = error.message || "Ocurrió un error";
+      toast.error(errorMessage, {
+        position: "top-right"
+      });
+      setWrongCredential(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -170,6 +177,7 @@ const LoginPage = () => {
               isLogin ? "Iniciar sesión" : "Registrarse"
             )}
           </button>
+          {wrongCredential ? <span style={{color: "#dc2626"}}>Usuario y/o contraseña incorrecta.</span> : ""}
         </form>
 
         <div>

@@ -1,9 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
-import { CloudOff } from "lucide-react";
 
 const UserInfo = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, loading } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -20,11 +19,15 @@ const UserInfo = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  if (loading || !user) return <div className="loading-user-info">Cargando usuario...</div>;
+
+  const initials = `${user?.name?.charAt(0) ?? ""}`;
+
   return (
     <div className="user-info" ref={menuRef}>
       <span className="user-name">{user?.name}</span>
       <div className="user-avatar" onClick={toggleMenu}>
-        {user?.name.charAt(0).toUpperCase()}
+        {initials}
       </div>
 
       {menuOpen && (

@@ -1,11 +1,11 @@
 import UserInfo from "./UserInfo";
 
-const Header = () => {
+const UserHeader = () => {
 
   return (
     <header className="admin-header">
     <div className="page-path">
-        <span className="parent">Admin / </span><span className="child">Dasboard</span>
+        <span className="parent">Inicio</span>
     </div>
       <div className="user-info">
         <UserInfo />
@@ -14,4 +14,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default UserHeader;

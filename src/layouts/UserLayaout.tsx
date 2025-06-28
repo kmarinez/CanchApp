@@ -1,16 +1,17 @@
-import { ReactNode } from "react";
-import { useAuth } from "../context/AuthContext";
+import { ReactNode, useState } from "react";
+import UserHeader from "../components/UserHeader";
+import UserSidebar from "../components/UserSidebar";
 
 const UserLayout = ({ children }: { children: ReactNode }) => {
-  const { user, logout } = useAuth();
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div className="user-layout">
-      <header className="user-header">
-        <h1>Bienvenido, {user?.name}</h1>
-        <button onClick={logout}>Salir</button>
-      </header>
-      <main>{children}</main>
+    <div className={`admin-layout ${collapsed ? "collapsed" : ""}`}>
+      <UserSidebar collapsed={collapsed} toggleSidebar={() => setCollapsed(!collapsed)} />
+      <div className="admin-main">
+        <UserHeader />
+        <main className="admin-content">{children}</main>
+      </div>
     </div>
   );
 };

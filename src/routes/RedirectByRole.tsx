@@ -9,10 +9,10 @@ function RedirectByRole() {
     useEffect(() => {
         if(!user){
             navigate("/login");
-        }else if(user.role === "admin") {
+        }else if(user.role === "admin" || user.role === "staff") {
             navigate("/dashboard");
-        }else if(user.role === "user") {
-            navigate("/reservations")
+        }else if(user.role === "customer") {
+            navigate("/home")
         }else {
             navigate("/not-authorized");
         }

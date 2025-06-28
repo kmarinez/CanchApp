@@ -2,11 +2,13 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import LoginPage from '../pages/LoginPage'
 import ReservationPage from '../pages/ReservationsPage';
 import NotFoundPage from '../pages/NotFoundPage';
-import PrivateRoute from '../routes/PrivateRoute';
 import AdminDashboardPage from '../pages/AdminDashboardPage';
 import NotAuthorizedPage from '../pages/NotAuthorizedPage';
 import UserLayout from '../layouts/UserLayaout';
 import AdminLayout from '../layouts/AdminLayaout';
+import AdminCourtPage from '../pages/AdminCourtsPage';
+import PrivateRoutes from '../routes/PrivateRoute';
+import HomePage from '../pages/HomePage';
 
 function AppRoute() {
   return (
@@ -14,23 +16,43 @@ function AppRoute() {
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<LoginPage />} />
       <Route
+        path="/home"
+        element={
+          <PrivateRoutes allowedRoles={["customer"]}>
+            <UserLayout>
+              <HomePage />
+            </UserLayout>
+          </PrivateRoutes>
+        }
+      />
+      <Route
         path="/reservations"
         element={
-          <PrivateRoute requiredRole="user">
+          <PrivateRoutes allowedRoles={["customer"]}>
             <UserLayout>
               <ReservationPage />
             </UserLayout>
-          </PrivateRoute>
+          </PrivateRoutes>
         }
       />
       <Route
         path="/dashboard"
         element={
-          <PrivateRoute requiredRole="admin">
+          <PrivateRoutes allowedRoles={["admin", "staff"]}>
             <AdminLayout>
               <AdminDashboardPage />
             </AdminLayout>
-          </PrivateRoute>
+          </PrivateRoutes>
+        }
+      />
+      <Route
+        path="/canchas"
+        element={
+          <PrivateRoutes allowedRoles={["admin", "staff"]}>
+            <AdminLayout>
+              <AdminCourtPage />
+            </AdminLayout>
+          </PrivateRoutes>
         }
       />
       <Route path="/not-authorized" element={<NotAuthorizedPage />} />

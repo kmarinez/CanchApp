@@ -267,6 +267,10 @@ body {
   z-index: 999;
 }
 
+.parent {
+  font-weight: 200;
+}
+
 .search-input {
   width: 300px;
   padding: 0.5rem 1rem;
@@ -283,7 +287,7 @@ body {
 }
 
 .user-name {
-  font-weight: 600;
+  font-weight: 100;
 }
 
 .user-avatar {
@@ -400,4 +404,950 @@ ul {
   font-size: 1.25rem;
   cursor: pointer;
   margin-left: auto;
+}
+
+
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.statCard {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+}
+
+.statCard:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.statHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.statTitle {
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.statIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statIcon.blue {
+  background: #dbeafe;
+}
+
+.statIcon.green {
+  background: #dcfce7;
+}
+
+.statIcon.orange {
+  background: #fed7aa;
+}
+
+.statIcon .icon {
+  width: 20px;
+  height: 20px;
+}
+
+.statIcon.blue .icon {
+  color: #2563eb;
+}
+
+.statIcon.green .icon {
+  color: #16a34a;
+}
+
+.statIcon.orange .icon {
+  color: #ea580c;
+}
+
+.statValue {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+/* Content Grid */
+.contentGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Cards */
+.card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+.cardHeader {
+  padding: 1.5rem 1.5rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.viewAllButton {
+  background: none;
+  border: none;
+  color: #16a34a;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.viewAllButton:hover {
+  background: #f0fdf4;
+}
+
+.cardContent {
+  padding: 1.5rem;
+}
+
+/* Bookings Table */
+.bookingsTable {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tableHeader {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1fr 1fr;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1fr 1fr;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  align-items: center;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.tableRow:last-child {
+  border-bottom: none;
+}
+
+.userCell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.userCell .userAvatar {
+  width: 32px;
+  height: 32px;
+  font-size: 0.875rem;
+}
+
+.userCell .userName {
+  font-weight: 500;
+  color: #1e293b;
+  font-size: 0.875rem;
+}
+
+.bookingDate {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.courtName {
+  font-size: 0.875rem;
+  color: #1e293b;
+}
+
+.bookingTime {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.status {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.status.confirmed {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.status.pending {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.status.cancelled {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/*Acciones Rapidas*/
+.quickActions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.actionButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem 1rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.actionButton:hover {
+  background: #f1f5f9;
+  border-color: #16a34a;
+}
+
+.actionButton .icon {
+  width: 24px;
+  height: 24px;
+  color: #16a34a;
+}
+
+
+
+.courtsManagement {
+  padding: 1rem 0.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.headerLeft h1 {
+  margin: 0;
+}
+
+.pageTitle {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.pageSubtitle {
+  color: #64748b;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.addButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #16a34a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.addButton:hover {
+  background: #15803d;
+}
+
+.addButton .icon {
+  width: 20px;
+  height: 20px;
+}
+
+
+.cleanFilter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cleanFilter:hover {
+  background: #e2e2e2;
+}
+
+.cleanFilter .icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Filters Section */
+.filtersSection {
+  display: flex;
+  gap: 4rem;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+
+.searchContainer {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+}
+
+.searchContainer svg {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: #64748b;
+}
+
+.searchInput {
+  width: 100%;
+  height: 44px;
+  padding: 0 0.75rem 0 2.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  background: white;
+  transition: all 0.2s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+}
+
+.filters {
+  display: flex;
+  gap: 1rem;
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filterGroup .icon {
+  width: 20px;
+  height: 20px;
+  color: #64748b;
+}
+
+.filterSelect {
+  height: 44px;
+  padding: 0 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  background: white;
+  cursor: pointer;
+  min-width: 120px;
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+}
+
+
+/* Courts Grid */
+.courtsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 1.5rem;
+}
+
+.courtCard {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.courtCard:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.courtImage {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.courtImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.courtStatus {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.statusActive {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.statusInactive {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.statusMaintenance {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.courtContent {
+  padding: 1.5rem;
+}
+
+.courtHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.courtName {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.courtType {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.courtDescription {
+  color: #64748b;
+  font-size: 0.875rem;
+  margin: 0 0 1rem 0;
+  line-height: 1.5;
+}
+
+.courtDetails {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.detailItem {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+}
+
+.detailLabel {
+  color: #64748b;
+}
+
+.detailValue {
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.courtPricing {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.priceItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.priceLabel {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-bottom: 0.25rem;
+}
+
+.priceValue {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #16a34a;
+}
+
+.courtStats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.statValue {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.25rem;
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.courtActions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.editButton,
+.deleteButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+  justify-content: center;
+}
+
+.editButton {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.editButton:hover {
+  background: #e2e8f0;
+}
+
+.deleteButton {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.deleteButton:hover {
+  background: #fee2e2;
+}
+
+.editButton .icon,
+.deleteButton .icon {
+  width: 16px;
+  height: 16px;
+}
+
+
+/* Empty State */
+.emptyState {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  grid-column: 1 / -1;
+}
+
+.emptyStateContent {
+  text-align: center;
+  max-width: 400px;
+}
+
+.emptyStateContent h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 0.5rem 0;
+}
+
+.emptyStateContent p {
+  color: #64748b;
+  margin: 0 0 1.5rem 0;
+}
+
+.clearFiltersButton {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 0.5rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background 0.2s ease;
+}
+
+.clearFiltersButton:hover {
+  background: #e2e8f0;
+}
+
+
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1.5rem 0;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 1.5rem;
+}
+
+.modalTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  color: #64748b;
+}
+
+.closeButton:hover {
+  background: #f1f5f9;
+}
+
+.closeButton .icon {
+  width: 20px;
+  height: 20px;
+}
+
+.modalForm {
+  padding: 0 1.5rem 1.5rem;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.formInput,
+.formSelect,
+.formTextarea {
+  height: 44px;
+  padding: 0 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  background: white;
+  font-family: inherit;
+}
+
+.formTextarea {
+  height: auto;
+  padding: 0.75rem;
+  resize: vertical;
+}
+
+.formInput:focus,
+.formSelect:focus,
+.formTextarea:focus {
+  outline: none;
+  border-color: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+}
+
+.checkboxGroup {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.5rem;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #374151;
+  cursor: pointer;
+}
+
+.formCheckbox {
+  width: 16px;
+  height: 16px;
+  accent-color: #16a34a;
+}
+
+.modalActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.cancelButton,
+.submitButton {
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.cancelButton {
+  background: white;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
+.cancelButton:hover {
+  background: #f8fafc;
+}
+
+.submitButton {
+  background: #16a34a;
+  color: white;
+  border: none;
+}
+
+.submitButton:hover {
+  background: #15803d;
+}
+
+/* Delete Modal */
+.deleteModal {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.deleteModalContent {
+  padding: 1.5rem;
+}
+
+.deleteModalTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 1rem 0;
+}
+
+.deleteModalText {
+  color: #64748b;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.5;
+}
+
+.deleteModalActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.confirmDeleteButton {
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #dc2626;
+  color: white;
+  border: none;
+  font-family: inherit;
+}
+
+.confirmDeleteButton:hover {
+  background: #b91c1c;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .courtsManagement {
+    padding: 1rem;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .filtersSection {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .filters {
+    flex-wrap: wrap;
+  }
+
+  .courtsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .checkboxGroup {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .modalActions {
+    flex-direction: column;
+  }
+
+  .courtDetails {
+    grid-template-columns: 1fr;
+  }
+
+  .courtPricing,
+  .courtStats {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .courtActions {
+    flex-direction: column;
+  }
 }

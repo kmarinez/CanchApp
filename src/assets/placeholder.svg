@@ -1,0 +1,6 @@
+<svg width="200" height="150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#e0e0e0"></rect>
+  <path d="M60 50 L75 30 L90 50 Z" fill="#b0b0b0"></path> <!-- Montaña 1 -->
+  <circle cx="140" cy="40" r="20" fill="#cccccc"></circle> <!-- Sol -->
+  <rect x="50" y="70" width="100" height="50" fill="#d0d0d0"></rect> <!-- Sombra imagen -->
+</svg>
