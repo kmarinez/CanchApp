@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import toast from "react-hot-toast";
 import { Eye, EyeOff } from "lucide-react";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 type FormValues = RecoveryPassword;
 
@@ -38,7 +39,7 @@ function ChangePassword() {
 
         try {
             let newPassword = data.newPassword;
-            const res = await fetch("http://localhost:4000/api/auth/resetpassword", {
+            const res = await fetch(`${apiUrl}/api/auth/resetpassword`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

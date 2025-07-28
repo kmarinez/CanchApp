@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from "../services/auth/authService";
 import { toast } from "react-hot-toast";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 interface User {
     id: string;
@@ -76,6 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(user);
         setToken(null);
         localStorage.setItem("user", JSON.stringify(user));
+
         if (user.role === "admin" || user.role === "staff") {
             navigate("/dashboard");
         } else if (user.role === "customer") {
@@ -89,7 +91,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const logout = async () => {
         try {
-            await fetch("http://localhost:4000/api/auth/logout", {
+            await fetch(`${apiUrl}/api/auth/logout`, {
                 method: "POST",
                 credentials: "include",
             });

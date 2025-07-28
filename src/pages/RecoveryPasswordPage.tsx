@@ -2,6 +2,7 @@ import { Check } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 function RecoveryPassword() {
     const [email, setEmail] = useState("");
@@ -14,7 +15,7 @@ function RecoveryPassword() {
         setIsLoading(true)
 
         try {
-            const res = await fetch("http://localhost:4000/api/user/passwordrecovery", {
+            const res = await fetch(`${apiUrl}/api/user/passwordrecovery`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

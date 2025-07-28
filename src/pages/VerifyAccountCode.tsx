@@ -2,6 +2,7 @@ import { Check } from "lucide-react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 function VerifyAccountCode() {
     const { state } = useLocation();
@@ -34,7 +35,7 @@ function VerifyAccountCode() {
         setIsLoading(true);
 
         try {
-            const res = await fetch("http://localhost:4000/api/auth/verifyAccount", {
+            const res = await fetch(`${apiUrl}/api/auth/verifyAccount`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -63,7 +64,7 @@ function VerifyAccountCode() {
         if (!email) return toast.error("No se encontró el correo electrónico.");
 
         try {
-            const res = await fetch("http://localhost:4000/api/user/resend-code", {
+            const res = await fetch(`${apiUrl}/api/user/resend-code`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email }),

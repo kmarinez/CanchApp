@@ -8,7 +8,7 @@ export interface ApiClientOptions extends RequestInit {
     endpoint: string,
     options: ApiClientOptions = {}
   ): Promise<T> {
-    const BASE_URL = "http://localhost:4000";
+    const BASE_URL = import.meta.env.VITE_API_URL;;
   
     const controller = new AbortController();
     const timeout = options.timeout || 30000; // default 30 segundos
@@ -28,7 +28,6 @@ export interface ApiClientOptions extends RequestInit {
 
         if (res.status === 401) {
           console.warn("Token expirado, cerrando sesión...");
-          triggerLogout();
           throw new Error("Sesión expirada, por favor inicia sesión.");
         }
 

@@ -1,9 +1,9 @@
 import { LoginForm, RegisterForm } from "../../types/authTypes";
 
-const API_URL = "http://localhost:4000/api/auth";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const loginRequest = async ({ email, password }: LoginForm) => {
-  const response = await fetch(`${API_URL}/login`, {
+  const response = await fetch(`${API_URL}/api/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -21,7 +21,7 @@ export const loginRequest = async ({ email, password }: LoginForm) => {
 };
 
 export const registerRequest = async (usr: RegisterForm) => {
-  const response = await fetch(`${API_URL}/register`, {
+  const response = await fetch(`${API_URL}/api/auth/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -32,7 +32,7 @@ export const registerRequest = async (usr: RegisterForm) => {
       identificationNum: usr.identificationNum,
       email: usr.email,
       password: usr.password,
-      role: "customer", // Puedes cambiar esto según lógica del frontend
+      role: "customer",
     }),
     credentials: "include"
   });
@@ -48,9 +48,9 @@ export const registerRequest = async (usr: RegisterForm) => {
 };
 
 export const getCurrentUser = async () => {
-  const response = await fetch(`${API_URL}/me`, {
+  const response = await fetch(`${API_URL}/api/auth/me`, {
     method: "GET",
-    credentials: "include", // importante para enviar la cookie
+    credentials: "include",
   });
 
   if (!response.ok) return null;
