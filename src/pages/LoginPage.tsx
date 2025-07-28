@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/styles.css";
 import logo from "../assets/Logo_CanchApp.svg";
 import { useAuth } from "../context/AuthContext";
@@ -10,6 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { LoginForm, RegisterForm } from "../types/authTypes";
 import { loginRequest, registerRequest } from "../services/auth/authService";
 import { toast } from "react-hot-toast";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type FormValues = LoginForm & Partial<RegisterForm>;
 
@@ -21,7 +22,17 @@ function formatCedula(value: string): string {
 }
 
 const LoginPage = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.sessionExpired) {
+      toast.error("Tu sesión ha expirado, por favor inicia sesión nuevamente.");
+    }
+  }, []);
+
   const { login } = useAuth();
+
+  const navigate = useNavigate();
 
   const [rawCedula, setRawCedula] = useState("");
 
@@ -37,31 +48,42 @@ const LoginPage = () => {
     handleSubmit,
     setValue,
     formState: { errors },
-    reset
+    reset,
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
-  })
-
+  });
 
   const onSubmit = async (data: LoginForm | RegisterForm) => {
     setLoading(true);
     setWrongCredential(false);
+
     try {
       if (isLogin) {
-        const res = await loginRequest({ email: data.email, password: data.password });
-        login({ token: "", user: res });
+        const res = await loginRequest({
+          email: data.email,
+          password: data.password,
+        });
+        if (!res.isVerified) {
+          navigate("/verificar-codigo", { state: { email: res.email } });
+        } else {
+          login({ token: "", user: res });
+        }
       } else {
         const res = await registerRequest(data as RegisterForm);
-        console.log("login", res);
-        login({ token: "", user: res });
+        if (!res.isVerified) {
+          navigate("/verificar-codigo", { state: { email: res.email } });
+        } else {
+          console.log("login", res);
+          login({ token: "", user: res });
+        }
       }
       reset();
       setRawCedula("");
     } catch (error: any) {
-      console.log("login", error)
+      console.log("login", error);
       let errorMessage = error.message || "Ocurrió un error";
       toast.error(errorMessage, {
-        position: "top-right"
+        position: "top-right",
       });
       setWrongCredential(true);
     } finally {
@@ -75,8 +97,12 @@ const LoginPage = () => {
         <img src={logo} alt="CanchApp logo" className="logo-image" />
       </div>
       <div className="login-card">
-        <h1 className="greatings">{isLogin ? "Bienvenido de nuevo" : "Crea tu cuenta"}</h1>
-        <h1 className="logo">canch<span className="logo-accent">App</span></h1>
+        <h1 className="greatings">
+          {isLogin ? "Bienvenido de nuevo" : "Crea tu cuenta"}
+        </h1>
+        <h1 className="logo">
+          canch<span className="logo-accent">App</span>
+        </h1>
         <p className="subtitle">Bienvenido a tu espacio de juego.</p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="login-form">
@@ -85,12 +111,20 @@ const LoginPage = () => {
               <div className="formGroup">
                 <label htmlFor="name">Nombre</label>
                 <input id="name" {...register("name")} placeholder="Timmy" />
-                {errors.name && <p className="error">{errors.name.message as string}</p>}
+                {errors.name && (
+                  <p className="error">{errors.name.message as string}</p>
+                )}
               </div>
               <div className="formGroup">
                 <label htmlFor="lastName">Apellido</label>
-                <input id="lastName" {...register("lastName")} placeholder="Memo" />
-                {errors.lastName && <p className="error">{errors.lastName.message}</p>}
+                <input
+                  id="lastName"
+                  {...register("lastName")}
+                  placeholder="Memo"
+                />
+                {errors.lastName && (
+                  <p className="error">{errors.lastName.message}</p>
+                )}
               </div>
             </div>
           )}
@@ -112,13 +146,19 @@ const LoginPage = () => {
                   {...register("identificationNum")}
                   value={formatCedula(rawCedula)}
                   onChange={(e) => {
-                    const digitsOnly = e.target.value.replace(/\D/g, "").slice(0, 11);
+                    const digitsOnly = e.target.value
+                      .replace(/\D/g, "")
+                      .slice(0, 11);
                     setRawCedula(digitsOnly);
                     setValue("identificationNum", digitsOnly);
                   }}
                   placeholder="000-0000000-0"
                 />
-                {errors.identificationNum && <p className="error">{errors.identificationNum.message as string}</p>}
+                {errors.identificationNum && (
+                  <p className="error">
+                    {errors.identificationNum.message as string}
+                  </p>
+                )}
               </div>
             </div>
           )}
@@ -141,7 +181,9 @@ const LoginPage = () => {
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
-            {errors.password && <p className="error">{errors.password.message}</p>}
+            {errors.password && (
+              <p className="error">{errors.password.message}</p>
+            )}
           </div>
 
           {!isLogin && (
@@ -160,10 +202,33 @@ const LoginPage = () => {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   aria-label="Mostrar u ocultar contraseña"
                 >
-                  {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showConfirmPassword ? (
+                    <EyeOff size={18} />
+                  ) : (
+                    <Eye size={18} />
+                  )}
                 </button>
               </div>
-              {errors.confirmPassword && <p className="error">{errors.confirmPassword.message}</p>}
+              {errors.confirmPassword && (
+                <p className="error">{errors.confirmPassword.message}</p>
+              )}
+            </div>
+          )}
+
+          {!isLogin && (
+            <div className="formGroup">
+              <label className="labelcheckbox">
+                <input
+                  type="checkbox"
+                  {...register("terms")}
+                  style={{ marginRight: "0.5rem" }}
+                />
+                Acepto los{" "}
+                <a style={{color: "#1cb179"}} href="/terminos" target="_blank" rel="noopener noreferrer">
+                  términos y condiciones
+                </a>
+              </label>
+              {errors.terms && <p className="error">{errors.terms.message}</p>}
             </div>
           )}
 
@@ -173,12 +238,34 @@ const LoginPage = () => {
                 {isLogin ? "Iniciando..." : "Registrando..."}
                 <Spinner small />
               </span>
+            ) : isLogin ? (
+              "Iniciar sesión"
             ) : (
-              isLogin ? "Iniciar sesión" : "Registrarse"
+              "Registrarse"
             )}
           </button>
-          {wrongCredential ? <span style={{color: "#dc2626"}}>Usuario y/o contraseña incorrecta.</span> : ""}
+          {wrongCredential ? (
+            <span style={{ color: "#dc2626" }}>
+              Usuario y/o contraseña incorrecta.
+            </span>
+          ) : (
+            ""
+          )}
         </form>
+
+        <div>
+          <button
+            type="button"
+            className="btn-signUp"
+            onClick={() => {
+              reset();
+              setRawCedula("");
+              navigate("/recuperar-acceso");
+            }}
+          >
+            {isLogin ? "Olvide mi contraseña" : ""}
+          </button>
+        </div>
 
         <div>
           <span className="register-link">

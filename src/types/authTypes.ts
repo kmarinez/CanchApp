@@ -9,4 +9,10 @@ export interface RegisterForm extends LoginForm {
   identificationNum: string;
   confirmPassword: string;
   role?: string;
+  terms?: boolean
+}
+
+export interface RecoveryPassword {
+  newPassword: string;
+  confirmPassword: string;
 }

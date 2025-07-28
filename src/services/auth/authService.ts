@@ -56,6 +56,5 @@ export const getCurrentUser = async () => {
   if (!response.ok) return null;
 
   const data = await response.json();
-  console.log("getCurrent", data)
   return data.user;
 };

@@ -1,6 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { JSX } from "react";
+import { toast } from "react-hot-toast";
 
 interface PrivateRouteProps {
     children: JSX.Element;
@@ -8,10 +9,10 @@ interface PrivateRouteProps {
 }
 
 function PrivateRoutes({ children, allowedRoles }: PrivateRouteProps) {
-    const { isAuthenticated, user } = useAuth();
+    const { isAuthenticated, user} = useAuth();
 
     if (!isAuthenticated) {
-        return <Navigate to="/login" replace />;
+        return <Navigate to="/login" replace state={{ sessionExpired: true }} />;
     }
 
     if (!user || (allowedRoles && !allowedRoles.includes(user.role))) {

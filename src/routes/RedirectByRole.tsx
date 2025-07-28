@@ -12,7 +12,7 @@ function RedirectByRole() {
         }else if(user.role === "admin" || user.role === "staff") {
             navigate("/dashboard");
         }else if(user.role === "customer") {
-            navigate("/home")
+            navigate("/inicio")
         }else {
             navigate("/not-authorized");
         }

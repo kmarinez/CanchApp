@@ -1,9 +1,9 @@
 import * as yup from "yup";
 
 export const courtSchema = yup.object({
-    courtName: yup.string().required("El nombre es obligatorio"),
+    courtName: yup.string().matches(/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/, "Solo se permiten letras").required("El nombre es obligatorio"),
     type: yup.string().oneOf(["baloncesto", "volleyball"], "Debe soleccionar un Tipo").required(),
-    location: yup.string().required("La locación es requerida"),
+    location: yup.string().matches(/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/, "Solo se permiten letras").required("La locación es requerida"),
     indoorOrOutdoor: yup.string().oneOf(["destechado", "techado"], "Debe seleccionar al menos una opción").required(),
     playerCapacity: yup
     .number()
@@ -18,6 +18,6 @@ export const courtSchema = yup.object({
     hourEndTime: yup.string().required("Hora final es requerida"),
     status: yup.string().oneOf(["activo", "mantenimiento"], "Debe seleccionar un estado").required(),
     hasLight: yup.boolean().required(),
-    description: yup.string().required("Debe indicar al menos un detalle de la cancha").default(""),
+    description: yup.string().matches(/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/, "Solo se permiten letras").required("Debe indicar al menos un detalle de la cancha").default(""),
     operatingDays: yup.array().of(yup.string()).typeError("Debe seleccionar al menos un día de operación").min(1, "Debe seleccionar al menos un dia de operación").required(),
 });

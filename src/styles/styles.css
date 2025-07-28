@@ -6,6 +6,17 @@ body {
   background: linear-gradient(135deg, #f0fdf4 0%, #eff6ff 50%, #faf5ff 100%);
 }
 
+.loading-modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
 /* === LOGIN === */
 .login-container {
   display: flex;
@@ -50,6 +61,7 @@ body {
   color: #2E8B57;
   margin-bottom: 0.2rem;
 }
+
 .logo-accent {
   color: #1E90FF;
 }
@@ -154,8 +166,13 @@ body {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .formGroup {
@@ -169,6 +186,7 @@ body {
   display: flex;
   gap: 1rem;
 }
+
 .inputsRow .formGroup {
   flex: 1;
 }
@@ -191,6 +209,16 @@ body {
   border: none;
   cursor: pointer;
   color: #666;
+}
+
+.togglePassword-recovery {
+  position: absolute;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  bottom: 2.5em;
 }
 
 .error {
@@ -222,11 +250,26 @@ body {
 }
 
 .admin-sidebar.collapsed {
-  width: 70px;
+  width: 170px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .admin-sidebar.collapsed .sidebar-header {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 3em;
+}
+
+.sidebar-logo-wrapper {
+  margin-bottom: 3em;
+  color: #1cb179;
+}
+
+.icon-menu-collapsed {
+  padding: 0 0 0 3.5em;
 }
 
 .admin-sidebar.collapsed .sidebar-title {
@@ -251,7 +294,7 @@ body {
 }
 
 .admin-layout.collapsed .admin-main {
-  margin-left: 100px;
+  margin-left: 170px;
 }
 
 .admin-header {
@@ -307,6 +350,7 @@ body {
   background-color: #189c67;
 }
 
+
 .user-dropdown {
   position: absolute;
   top: 45px;
@@ -337,7 +381,8 @@ body {
   background-color: #f0fdf4;
 }
 
-.admin-content {
+.admin-content,
+.user-content {
   flex: 1;
   overflow-y: auto;
   padding: 1.5rem;
@@ -352,13 +397,17 @@ body {
 }
 
 .sidebar-logo {
-  width: 3vw;
+  width: 5vw;
+}
+
+.sidebar-logo.collapsed {
+  margin-bottom: 3em;
 }
 
 .sidebar-title {
   margin-left: 10px;
-  height: 5vh;
-} 
+  height: 3vh;
+}
 
 ul {
   padding: 0px;
@@ -398,12 +447,18 @@ ul {
 }
 
 /* Toggle */
+.toggle-button.collapsed {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
 .toggle-button {
   background: none;
   border: none;
   font-size: 1.25rem;
   cursor: pointer;
-  margin-left: auto;
 }
 
 
@@ -545,6 +600,7 @@ ul {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  overflow-x: auto;
 }
 
 .tableHeader {
@@ -743,6 +799,31 @@ ul {
   height: 20px;
 }
 
+
+.searchButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #16a34a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.searchButton:hover {
+  background: #15803d;
+}
+
+.searchButton .icon {
+  width: 20px;
+  height: 20px;
+}
+
 /* Filters Section */
 .filtersSection {
   display: flex;
@@ -818,6 +899,22 @@ ul {
   box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
 }
 
+.filterDate {
+  height: 44px;
+  padding: 0 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  background: white;
+  cursor: pointer;
+  min-width: 120px;
+}
+
+.filterDate:focus {
+  outline: none;
+  border-color: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+}
 
 /* Courts Grid */
 .courtsGrid {
@@ -890,6 +987,11 @@ ul {
 .courtName {
   font-size: 1.25rem;
   font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.courtNameDashboard {
   color: #1e293b;
   margin: 0;
 }
@@ -1042,6 +1144,7 @@ ul {
   align-items: center;
   min-height: 400px;
   grid-column: 1 / -1;
+  flex-direction: column;
 }
 
 .emptyStateContent {
@@ -1216,6 +1319,15 @@ ul {
   border-top: 1px solid #e2e8f0;
 }
 
+.modalDetails {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
 .cancelButton,
 .submitButton {
   padding: 0.75rem 1.5rem;
@@ -1276,6 +1388,10 @@ ul {
   display: flex;
   gap: 1rem;
   justify-content: flex-end;
+}
+
+.errorCourtForm {
+  color: #dc2626;
 }
 
 .confirmDeleteButton {
@@ -1349,5 +1465,2019 @@ ul {
 
   .courtActions {
     flex-direction: column;
+  }
+}
+
+
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.statCard {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.statValue {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.statLabel {
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* Table */
+.tableContainer {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  overflow-x: auto;
+}
+
+.usersTable {
+  width: 100%;
+  border-collapse: collapse;
+  overflow-x: auto;
+}
+
+.usersTable th {
+  background: #f8fafc;
+  padding: 1rem;
+  text-align: left;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.usersTable td {
+  padding: 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: top;
+}
+
+.usersTable tr:last-child td {
+  border-bottom: none;
+}
+
+.selectedRow {
+  background: #f0fdf4 !important;
+}
+
+.usersTable tr:hover {
+  background: #f8fafc;
+}
+
+
+.reservationTable {
+  width: 100%;
+  border-collapse: collapse;
+  overflow-x: auto;
+}
+
+.reservationTable th {
+  background: #f8fafc;
+  padding: 1rem;
+  text-align: left;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.reservationTable td {
+  padding: 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: top;
+}
+
+.reservationTable tr:last-child td {
+  border-bottom: none;
+}
+
+.reservationTable tr:hover {
+  background: #f8fafc;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: #16a34a;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.userAvatar {
+  width: 48px;
+  height: 48px;
+  background: #16a34a;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.userDetails {
+  min-width: 0;
+  flex: 1;
+}
+
+.userName {
+  font-weight: 500;
+  color: #1e293b;
+  margin-bottom: 0.125rem;
+}
+
+.userEmail {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-bottom: 0.125rem;
+}
+
+.dateDetails {
+  min-width: 0;
+  flex: 1;
+}
+
+.date {
+  font-weight: 500;
+  color: #1e293b;
+  margin-bottom: 0.125rem;
+}
+
+.hours {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-bottom: 0.125rem;
+}
+
+.role,
+.status {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  text-transform: capitalize;
+}
+
+.roleAdmin {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.roleStaff {
+  background: #e0e7ff;
+  color: #6366f1;
+}
+
+.roleCustomer {
+  background: #f3e8ff;
+  color: #9333ea;
+}
+
+.statusActive {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.statusInactive {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.statusPending {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.statusSuspended {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.verification {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.verificationItem {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+}
+
+.verificationItem .icon {
+  width: 14px;
+  height: 14px;
+}
+
+.verificationItem:first-child .icon {
+  color: #16a34a;
+}
+
+.verificationItem:last-child .icon {
+  color: #dc2626;
+}
+
+.activityInfo {
+  font-size: 0.875rem;
+}
+
+.joinedDate {
+  color: #1e293b;
+  margin-bottom: 0.125rem;
+}
+
+.lastActive {
+  color: #64748b;
+  font-size: 0.75rem;
+}
+
+.bookingStats {
+  font-size: 0.875rem;
+}
+
+.bookingCount {
+  color: #1e293b;
+  font-weight: 500;
+  margin-bottom: 0.125rem;
+}
+
+.totalSpent {
+  color: #16a34a;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.actionButton {
+  background: none;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #64748b;
+}
+
+.actionButton:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.actionButton .icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.paginationInfo {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.paginationControls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.paginationButton {
+  background: none;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #64748b;
+  font-family: inherit;
+}
+
+.paginationButton:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.paginationButton:disabled {
+  color: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.paginationButton.active {
+  background: #16a34a;
+  color: white;
+  border-color: #16a34a;
+}
+
+.modalContent {
+  padding: 0 1.5rem 1.5rem;
+}
+
+/* User Profile View */
+.userProfile {
+  max-width: 600px;
+}
+
+.profileHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.profileAvatar {
+  width: 80px;
+  height: 80px;
+  background: #16a34a;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+.profileInfo h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 0.5rem 0;
+}
+
+.profileInfo p {
+  color: #64748b;
+  margin: 0 0 1rem 0;
+}
+
+.profileBadges {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.profileDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.verifyDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.detailSection h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 1rem 0;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.detailItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 6px;
+}
+
+.detailLabel {
+  font-weight: 500;
+  color: #64748b;
+}
+
+.detailValue {
+  color: #1e293b;
+  font-weight: 500;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .usersManagement {
+    padding: 1rem;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .headerActions {
+    justify-content: stretch;
+  }
+
+  .exportButton,
+  .addButton {
+    flex: 1;
+  }
+
+  .filtersSection {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .filters {
+    flex-wrap: wrap;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tableContainer {
+    overflow-x: auto;
+  }
+
+  .usersTable {
+    min-width: 800px;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .modalActions {
+    flex-direction: column;
+  }
+
+  .pagination {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .paginationControls {
+    justify-content: center;
+  }
+
+  .detailGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .profileHeader {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+
+
+
+
+/*CUSTOMERS*/
+/* Dashboard Content */
+.dashboardContent {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* Welcome Section */
+.welcomeSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+}
+
+.welcomeContent {
+  flex: 1;
+}
+
+.welcomeTitle {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.welcomeSubtitle {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* Quick Search */
+.quickSearch {
+  margin-bottom: 2rem;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+.quickSearchForm {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  align-items: end;
+}
+
+.searchField {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchField .icon {
+  position: absolute;
+  left: 0.75rem;
+  width: 20px;
+  height: 20px;
+  color: #64748b;
+  z-index: 1;
+}
+
+.searchInput,
+.searchSelect {
+  width: 100%;
+  height: 44px;
+  padding: 0 0.75rem 0 2.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  background: white;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  margin-left: 5px;
+}
+
+.searchInput:focus,
+.searchSelect:focus {
+  outline: none;
+  border-color: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+}
+
+.searchButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #16a34a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-family: inherit;
+  height: 44px;
+}
+
+.searchButton:hover {
+  background: #15803d;
+}
+
+.searchButton .icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Dashboard Grid */
+.dashboardGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Section Headers */
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.sectionSubtitle {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+}
+
+.viewAllButton {
+  background: none;
+  border: none;
+  color: #16a34a;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  font-family: inherit;
+}
+
+.viewAllButton:hover {
+  background: #f0fdf4;
+}
+
+/* Upcoming Bookings */
+.upcomingBookings {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.bookingsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.bookingCard {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.bookingCard:hover {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.bookingImage {
+  width: 80px;
+  height: 80px;
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.bookingImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bookingDetails {
+  flex: 1;
+  min-width: 0;
+}
+
+.bookingHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.bookingCourtName {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.bookingStatus {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  text-transform: capitalize;
+}
+
+.confirmed {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.pending {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.completed {
+  background: #e0e7ff;
+  color: #6366f1;
+}
+
+.cancelled {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.bookingType {
+  color: #16a34a;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.bookingLocation,
+.bookingTime,
+.bookingDuration {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-bottom: 0.25rem;
+}
+
+.bookingLocation .icon,
+.bookingTime .icon,
+.bookingDuration .icon {
+  width: 14px;
+  height: 14px;
+}
+
+.bookingActions {
+  display: flex;
+  align-items: center;
+}
+
+.actionButton {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #64748b;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.actionButton:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 2rem;
+  color: #64748b;
+}
+
+.bookNowButton {
+  background: #16a34a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 1rem;
+  font-family: inherit;
+}
+
+.bookNowButton:hover {
+  background: #15803d;
+}
+
+/* Recent Activity */
+.recentActivity {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.activityList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.activityItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid #f1f5f9;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.activityItem:hover {
+  background: #f8fafc;
+}
+
+.activityImage {
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.activityImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.activityDetails {
+  flex: 1;
+  min-width: 0;
+}
+
+.activityCourtName {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1e293b;
+  margin-bottom: 0.125rem;
+}
+
+.activityDate {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-bottom: 0.125rem;
+}
+
+.activityPrice {
+  font-size: 0.75rem;
+  color: #16a34a;
+  font-weight: 500;
+}
+
+.bookAgainButton {
+  background: none;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #64748b;
+}
+
+.bookAgainButton:hover {
+  background: #f8fafc;
+  border-color: #16a34a;
+  color: #16a34a;
+}
+
+.bookAgainButton .icon {
+  width: 16px;
+  height: 16px;
+}
+
+
+
+
+/**/
+
+.reservation-container {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.sectionTitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.courtsGrid-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.courtCard-form {
+  background: white;
+  border: 2px solid #f0f0f0;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.courtCard-form:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.courtCard-form.selected {
+  border-color: #16a34a;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.courtImage-form {
+  height: 150px;
+  overflow: hidden;
+}
+
+.courtImage-form img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.courtInfo-form {
+  padding: 1rem;
+}
+
+.courtName-form {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 0.25rem 0;
+}
+
+.courtLocation-form {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0 0 0.75rem 0;
+}
+
+.courtDetails-form {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.courtType-form {
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.courtCapacity-form {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.selectedBadge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 30px;
+  height: 30px;
+  background: #16a34a;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.form {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-weight: 500;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.input,
+.select {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.input-edit {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+  width: 30%;
+}
+
+.input:focus,
+.input-edit,
+.select:focus {
+  outline: none;
+  border-color: #16a34a;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.summary {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.summaryTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 1rem 0;
+}
+
+.summaryContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.summaryItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summaryItem.total {
+  border-top: 1px solid #ddd;
+  padding-top: 0.75rem;
+  margin-top: 0.5rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@media (max-width: 768px) {
+  .reservationForm {
+    padding: 1.5rem;
+  }
+
+  .courtsGrid-form {
+    grid-template-columns: 1fr;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+/* CONFIRMATION PAGE */
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(22, 163, 74, 0.2);
+  border-radius: 12px;
+  color: #16a34a;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  text-decoration: none;
+}
+
+.backButton:hover {
+  background: rgba(22, 163, 74, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2);
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+/* Court Card */
+.courtCard {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.courtImage {
+  position: relative;
+  width: 200px;
+  height: 120px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.courtImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.availabilityBadge {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  background: #dcfce7;
+  color: #16a34a;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.courtInfo {
+  flex: 1;
+}
+
+.courtName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.5rem 0;
+}
+
+.courtLocation,
+.courtType {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin: 0.25rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Summary Card */
+.summaryCard {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.summaryTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 1.5rem 0;
+  text-align: center;
+}
+
+.summaryContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.summaryItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: rgba(22, 163, 74, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(22, 163, 74, 0.1);
+}
+
+.summaryLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.summaryIcon {
+  font-size: 1.2rem;
+  width: 24px;
+  text-align: center;
+}
+
+.summaryValue {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 1rem;
+}
+
+/* Total Section */
+.totalSection {
+  border-top: 2px solid rgba(22, 163, 74, 0.2);
+  padding-top: 1.5rem;
+}
+
+.totalItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: linear-gradient(135deg, rgba(22, 163, 74, 0.1), rgba(22, 163, 74, 0.05));
+  border-radius: 12px;
+  border: 2px solid rgba(22, 163, 74, 0.2);
+}
+
+.totalLabel {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.totalValue {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #16a34a;
+}
+
+/* Notes Card */
+.notesCard {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.notesTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.notesList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.notesList li {
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.notesList li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #16a34a;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.editButton,
+.confirmButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  min-width: 180px;
+}
+
+.editButton {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(22, 163, 74, 0.3);
+  color: #16a34a;
+}
+
+.editButton:hover {
+  background: rgba(22, 163, 74, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(22, 163, 74, 0.2);
+}
+
+.confirmButton {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  border: none;
+  color: white;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+}
+
+.confirmButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(22, 163, 74, 0.4);
+}
+
+.buttonIcon {
+  font-size: 1.1rem;
+}
+
+/* Error State */
+.errorState {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.errorIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.errorTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 1rem 0;
+}
+
+.errorText {
+  color: #64748b;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 0 2rem 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .confirmationPage {
+    padding: 1rem 0;
+  }
+
+  .container {
+    padding: 0 0.5rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .courtCard {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .courtImage {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .summaryCard,
+  .notesCard {
+    padding: 1.5rem;
+  }
+
+  .summaryItem {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .totalItem {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .editButton,
+  .confirmButton {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .summaryCard {
+    padding: 1rem;
+  }
+
+  .summaryItem {
+    padding: 0.75rem;
+  }
+
+  .totalItem {
+    padding: 0.75rem;
+  }
+
+  .totalLabel {
+    font-size: 1rem;
+  }
+
+  .totalValue {
+    font-size: 1.25rem;
+  }
+}
+
+
+
+.reservationsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.reservationCard {
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  height: 200px;
+  padding: 0;
+}
+
+.courtImage {
+  width: 160px;
+  height: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.courtImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.courtContent {
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  font-size: 14px;
+}
+
+.courtHeader h2 {
+  font-size: 16px;
+  margin: 0;
+}
+
+.courtType {
+  font-size: 13px;
+  color: #555;
+  justify-content: center;
+  width: 3.8rem;
+}
+
+.courtDescription {
+  margin: 10px 0;
+  padding-top: 5px;
+  font-size: 15px;
+}
+
+.courtDetails {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 14px;
+  color: #444;
+}
+
+.myReservationActions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.myReservationActionButton {
+  background: none;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #64748b;
+}
+
+button.myReservationActionButton.editar {
+  border: 1px solid #bbbbbb;
+}
+
+.myReservationActionButton:hover {
+  background: #f1f5f9;
+  border-color: #16a34a;
+  cursor: pointer;
+}
+
+button.myReservationActionButton.cancelar {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+
+
+.profile-container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: auto;
+  font-family: system-ui, sans-serif;
+  color: #1a1a1a;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.editAction {
+  background: none;
+  border: none;
+  color: #16a34a;
+  cursor: pointer;
+}
+
+.profile-avatar {
+  flex-shrink: 0;
+}
+
+.avatar-circle {
+  background-color: #16a34a;
+  color: #fff;
+  font-weight: bold;
+  font-size: 2rem;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-info {
+  flex-grow: 1;
+}
+
+.profile-name {
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.profile-email {
+  color: #555;
+}
+
+.profile-body {
+  margin-top: 2rem;
+}
+
+.profile-section {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.profile-section h2 {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+  .profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .avatar-circle {
+    width: 64px;
+    height: 64px;
+    font-size: 1.5rem;
+  }
+
+  .profile-name {
+    font-size: 1.5rem;
+  }
+}
+
+
+.recover-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f7f9fc;
+  padding: 1.5rem;
+}
+
+.login-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-image {
+  max-width: 180px;
+  height: auto;
+}
+
+.recover-form {
+  background: white;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  max-width: 400px;
+  width: 100%;
+}
+
+.recover-title {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.recover-subtitle {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.recover-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.recover-input {
+  width: 93%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.recover-input:focus {
+  outline: #16a34a;
+}
+
+.recover-button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #189c67;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.recover-button:hover {
+  background-color: #15803d;
+}
+
+.recover-link {
+  margin-top: 1rem;
+  background: none;
+  border: none;
+  color: #189c67;
+  text-align: center;
+  width: 100%;
+  cursor: pointer;
+  font-size: 0.9rem;
+  text-decoration: underline;
+}
+
+.recover-link:hover {
+  color: #15803d;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .recover-form {
+    padding: 1.5rem;
+  }
+
+  .recover-title {
+    font-size: 1.3rem;
+  }
+
+  .recover-button,
+  .recover-input {
+    font-size: 0.95rem;
+  }
+
+  .filterGroup {
+    flex-direction: column;
+  }
+
+  .pagination {
+    margin-right: 3.5em;
+  }
+}
+
+
+.recover-icon {
+  display: flex;
+  justify-content: center;
+  color: white;
+  background: #1cb179;
+  border-radius: 100px;
+  width: 100px;
+  height: 100px;
+  margin-left: 38%;
+  align-items: center;
+}
+
+@media (max-width: 870px) {
+  html {
+    font-size: 14px;
+  }
+
+  .admin-sidebar.collapsed {
+    width: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .admin-layout.collapsed .admin-main {
+    margin-left: 70px;
+  }
+
+  .icon-menu-collapsed {
+    padding: 0px 0px 0 0;
+  }
+
+  .user-content {
+    padding: 0;
+  }
+
+  .admin-content {
+    padding: 1em;
+  }
+
+  .upcomingBookings {
+    padding: 0;
+  }
+
+  .inputsRow {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    text-align: left;
+  }
+
+  .sectionHeader {
+    padding: 1em;
+  }
+
+  .login-container,
+  .formGrid,
+  .filtersSection,
+  .header,
+  .modalActions .form {
+    flex-direction: column !important;
+  }
+
+  .editReservationPage,
+  .myReservationsPage,
+  .bookingCard {
+    padding: 1.5em;
+  }
+
+  .courtCard,
+  .reservationCard {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .courtImage {
+    width: 100%;
+    height: 160px;
+  }
+
+  .dashboardContent {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+
+  .userCell .user-avatar {
+    width: 0;
+  }
+
+  .bookingsTable thead {
+    display: none;
+  }
+
+  .bookingsTable tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    background: #fff;
+  }
+
+  .bookingsTable td {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+  }
+
+  .bookingsTable td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #64748b;
+  }
+
+  .filtersSection {
+    flex-direction: column;
+    display: flex;
+    align-items: flex-start;
+  }
+}
+
+/* iPad Mini (768px - vertical) */
+@media (max-width: 768px) {
+
+  .dashboardGrid,
+  .statsGrid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .courtsGrid,
+  .formGrid {
+    grid-template-columns: 0.8fr !important;
+  }
+
+  .usersManagement .statsGrid {
+    grid-template-columns: 0.8fr !important;
+  }
+
+  .filters {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .modal {
+    max-width: 100%;
+    padding: 1rem;
+  }
+
+  .modalActions {
+    flex-direction: column;
+  }
+
+  .addButton,
+  .searchButton,
+  .cleanFilter {
+    width: 100%;
+    justify-content: center;
   }
 }

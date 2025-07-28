@@ -1,12 +1,13 @@
 import { useState } from "react"
-import { Court } from "../types/Court"
-import placeholder from "../assets/placeholder.png";
+import { Court } from "../../types/Court"
+import placeholder from "../../assets/placeholder.png";
 import { BrushCleaning, Funnel, Pencil, PlusIcon, Search, Trash2, X } from "lucide-react"
-import { useCourts, useCreateCourt, useDeleteCourt, useUpdateCourt } from "../hooks/courts/useCourts";
-import { courtSchema } from "../validations/courtSchema";
+import { useCourts, useCreateCourt, useDeleteCourt, useUpdateCourt } from "../../hooks/courts/useCourts";
+import { courtSchema } from "../../validations/courtSchema";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InferType } from "yup";
+import LoadingOverlay from "../../components/LoadingOverlay";
 
 type CourtFormValues = InferType<typeof courtSchema>;
 
@@ -48,7 +49,7 @@ function AdminCourtPage() {
         setSelectedCourt(null)
         reset({
             courtName: "",
-            type: "" as any,  // si es enum, forzamos vacío
+            type: "" as any,
             location: "",
             indoorOrOutdoor: "" as any,
             playerCapacity: 1,
@@ -153,9 +154,10 @@ function AdminCourtPage() {
 
     return (
         <div className="courtsManagement">
+            {isLoading && <LoadingOverlay />}
             <div className="header">
                 <div className="headerLeft">
-                    <h1 className="pageTitle">Administración Canchas</h1>
+                    <h1 className="pageTitle">Administrar Canchas</h1>
                     {/* <p className="pageSubtitle">Manage your courts, pricing, and availability</p> */}
                 </div>
                 <button className="addButton" onClick={handleAddCourt}>

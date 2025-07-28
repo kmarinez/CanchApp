@@ -11,6 +11,8 @@ export const registerSchema = yup.object({
     lastName: yup.string().required("Apellido requerido"),
     email: yup.string().email("Correo inválido").required("Correo requerido"),
     password: yup.string().min(6, "Mínimo 6 caracteres").required("Contraseña requerida"),
+    confirmPassword: yup.string().min(6, "Mínimo 6 caracteres").required("Contraseña requerida")
+    .oneOf([yup.ref("password")], "Las contraseñas no coinciden"),
     identificationNum: yup
     .string()
     .required("Número de identificación requerido")
@@ -23,4 +25,12 @@ export const registerSchema = yup.object({
         return dominicanIDValidation(cleaned);
       }
     ),
+    terms: yup
+    .boolean()
+    .oneOf([true], "Debes aceptar los términos y condiciones"),
 });
+
+export const recoverySchema = yup.object({
+  newPassword: yup.string().min(6, "Mínimo 6 caracteres").required("Contraseña requerida"),
+  confirmPassword: yup.string().min(6, "Mínimo 6 caracteres").required("Contraseña requerida"),
+})

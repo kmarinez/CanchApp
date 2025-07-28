@@ -1,3 +1,5 @@
+import { triggerLogout } from "../context/AuthContext";
+
 export interface ApiClientOptions extends RequestInit {
     timeout?: number; // milisegundos
   }
@@ -23,10 +25,17 @@ export interface ApiClientOptions extends RequestInit {
   
       if (!res.ok) {
         const errorBody = await res.json().catch(() => ({}));
+
+        if (res.status === 401) {
+          console.warn("Token expirado, cerrando sesión...");
+          triggerLogout();
+          throw new Error("Sesión expirada, por favor inicia sesión.");
+        }
+
         console.error("API Error:", res.status, errorBody);
         throw new Error(errorBody.message || `API Error ${res.status}`);
       }
-  
+      
       return res.json();
     } catch (err: any) {
       if (err.name === "AbortError") {

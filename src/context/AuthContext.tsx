@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getCurrentUser } from "../services/auth/authService";
+import { toast } from "react-hot-toast";
 
 interface User {
     id: string;
@@ -19,9 +20,25 @@ interface AuthContextProp {
     login: (data: { token: string; user: User; }) => void;
     logout: () => void;
     loading: boolean;
+    setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
 const AuthContext = createContext<AuthContextProp | undefined>(undefined);
+
+
+let externalLogout: (() => void) | null = null;
+
+export const setLogoutCallback = (callback: () => void) => {
+    externalLogout = callback;
+};
+
+export const triggerLogout = () => {
+    if (externalLogout) {
+        externalLogout();
+    }
+};
+
+
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
@@ -31,22 +48,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const navigate = useNavigate();
 
     useEffect(() => {
+        setLogoutCallback(logout);
+
         const loadUser = async () => {
             try {
                 const currentUser = await getCurrentUser();
-                console.log("auth", currentUser);
+                console.log(currentUser);
                 if (currentUser) {
                     setUser(currentUser);
                 }
-            } catch (error) {
+            } catch (error: any) {
                 console.error("Error al restaurar sesión:", error);
+                if (error.message.includes("expirada")) {
+                    toast.error(error.message)
+                    logout()
+                }
             } finally {
                 setLoading(false);
             }
         };
-
         loadUser();
     }, []);
+
+
 
     const login = ({ user }: { user: User }) => {
         setUser(user);
@@ -55,11 +79,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (user.role === "admin" || user.role === "staff") {
             navigate("/dashboard");
         } else if (user.role === "customer") {
-            navigate("/reservations");
+            navigate("/inicio");
         } else {
             navigate("/not-authorized");
         }
     }
+
+
 
     const logout = async () => {
         try {
@@ -73,12 +99,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setUser(null);
             setToken(null);
             localStorage.removeItem("user");
-            navigate("/login");
+            navigate("/login", {
+                replace: true,
+                state: { sessionExpired: true },
+            });
         }
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, isAuthenticated: !!user, login, logout, loading }}>
+        <AuthContext.Provider value={{ user, token, isAuthenticated: !!user, login, logout, loading, setUser }}>
             {!loading && children}
         </AuthContext.Provider>
     );
