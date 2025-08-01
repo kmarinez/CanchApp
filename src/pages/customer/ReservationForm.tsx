@@ -10,7 +10,7 @@ import {
 } from "../../hooks/courts/useCourts";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { format, isValid, parseISO } from "date-fns";
+import { format, isValid, parseISO, getDay } from "date-fns";
 import { toast } from "react-hot-toast";
 import LoadingOverlay from "../../components/LoadingOverlay";
 import { useForm } from "react-hook-form";
@@ -124,6 +124,24 @@ function ReservationForm() {
 
     return validEndTimes;
   })();
+
+  const dayMap: Record<string, number> = {
+    domingo: 0,
+    lunes: 1,
+    martes: 2,
+    miércoles: 3,
+    jueves: 4,
+    viernes: 5,
+    sábado: 6,
+  };
+  
+  const isDayAllowed = (date: Date) => {
+    if (!selectedCourt) return false;
+  
+    const dayNumber = getDay(date); // 0 (domingo) - 6 (sábado)
+    const allowedDays = selectedCourt.operatingDays.map((day) => dayMap[day.toLowerCase()]);
+    return allowedDays.includes(dayNumber);
+  };
 
   const {
     register,
@@ -253,6 +271,7 @@ function ReservationForm() {
                   onChange={(date: Date | null) => setSelectedDate(date)}
                   minDate={new Date()}
                   excludeDates={unavailableDates}
+                  filterDate={isDayAllowed}
                   placeholderText="Selecciona una fecha"
                   dateFormat="yyyy-MM-dd"
                   className="input"
