@@ -17,7 +17,7 @@ function AdminCourtPage() {
     const { mutate: createCourtMutation, isPending: isCreating } = useCreateCourt();
     const { mutate: updateCourtMutation, isPending: isUpdating } = useUpdateCourt();
 
-    const courtTypes = ["baloncesto", "volleyball"]
+    const courtTypes = ["baloncesto", "voleibol"]
     const daysOfWeek = ["lunes", "martes", "miércoles", "jueves", "viernes", "sabado", "domingo"]
 
     const [showModal, setShowModal] = useState(false)
@@ -82,7 +82,7 @@ function AdminCourtPage() {
         setShowModal(true)
         reset({
             courtName: court.courtName,
-            type: court.type as 'baloncesto' | "volleyball",
+            type: court.type as 'baloncesto' | "voleibol",
             location: court.location,
             indoorOrOutdoor: court.indoorOrOutdoor as 'techado' | 'destechado',
             playerCapacity: court.playerCapacity,

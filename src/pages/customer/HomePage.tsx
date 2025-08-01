@@ -116,7 +116,7 @@ const HomePage = () => {
               className="searchSelect"
             >
               <option value="">Selecciona el horario</option>
-              <option value="morning">Manaña (6AM - 12PM)</option>
+              <option value="morning">Mañana (6AM - 12PM)</option>
               <option value="afternoon">Tarde (12PM - 6PM)</option>
               <option value="evening">Noche (6PM - 10PM)</option>
             </select>
@@ -129,7 +129,7 @@ const HomePage = () => {
             >
               <option value="">Cualquier deporte</option>
               <option value="baloncesto">Baloncesto</option>
-              <option value="volleyball">voleibol</option>
+              <option value="voleibol">Voleibol</option>
             </select>
           </div>
           <button className="searchButton" onClick={handleQuickSearch}>

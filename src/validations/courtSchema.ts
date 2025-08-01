@@ -2,7 +2,7 @@ import * as yup from "yup";
 
 export const courtSchema = yup.object({
     courtName: yup.string().matches(/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/, "Solo se permiten letras").required("El nombre es obligatorio"),
-    type: yup.string().oneOf(["baloncesto", "volleyball"], "Debe soleccionar un Tipo").required(),
+    type: yup.string().oneOf(["baloncesto", "voleibol"], "Debe soleccionar un Tipo").required(),
     location: yup.string().matches(/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/, "Solo se permiten letras").required("La locación es requerida"),
     indoorOrOutdoor: yup.string().oneOf(["destechado", "techado"], "Debe seleccionar al menos una opción").required(),
     playerCapacity: yup
