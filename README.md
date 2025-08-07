@@ -1,54 +1,61 @@
-# React + TypeScript + Vite
+# 🏀 CanchApp - Sistema de Reservas de Canchas Comunitarias
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**CanchApp** es una aplicación web diseñada para facilitar la gestión y reserva de canchas deportivas comunitarias. Permite a los usuarios consultar disponibilidad, realizar reservas con validación por código, y a los administradores gestionar los espacios de manera eficiente, todo desde una plataforma accesible y moderna.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Funcionalidades Principales
 
-## Expanding the ESLint configuration
+- Consulta de disponibilidad por fecha y cancha.
+- Registro e inicio de sesión con verificación por código.
+- Panel administrativo con estadísticas, filtros y control de reservas.
+- Cancelación y edición de reservas con justificación.
+- Protección de rutas por roles (`admin`, `staff`, `user`).
+- Arquitectura basada en API REST, con despliegue en la nube.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 🧱 Tecnologías Utilizadas
+
+- **Frontend:** React 18, TypeScript, Vercel
+- **Backend:** Node.js, Express, Railway
+- **Base de datos:** MongoDB Atlas (Mongoose)
+- **Autenticación:** JWT, bcryptjs
+- **Control de versiones:** Git + GitHub
+
+---
+
+## 🛠 Estructura del Proyecto
+
+```bash
+/canchapp-frontend     # Interfaz del usuario en React
+/canchapp-backend      # API REST en Node.js + Express
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Cada carpeta incluye su propio README, instrucciones de instalación y configuración.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## 📘 Proyecto Académico
+
+Este proyecto fue desarrollado como parte de la asignatura **Proyecto Integrador 2** de la carrera de Ingeniería en Tecnologías de la Información y Comunicación.
+
+### Estudiantes:
+- **Diego Alberto Roedan Mariñez** – 22-1101  
+- **Katerin Smirna Mariñez Ortiz** – 22-1131  
+- **Whitney Astacio** – 23-0445
+
+### Profesora:
+**Julissa Margarita Mateo Abad**
+
+---
+
+## 📄 Licencia
+
+Este proyecto se ha desarrollado con fines educativos. Su reutilización o adaptación debe contar con la debida autorización de los autores.
+
+---
+
+## 📬 Contacto
+
+Para consultas académicas o técnicas, puedes escribirnos a través del repositorio o por mensaje directo.
