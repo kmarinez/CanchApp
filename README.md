@@ -28,8 +28,8 @@
 ## 🛠 Estructura del Proyecto
 
 ```bash
-/canchapp-frontend     # Interfaz del usuario en React
-/canchapp-backend      # API REST en Node.js + Express
+/canchapp     # Interfaz del usuario en React
+
 ```
 
 Cada carpeta incluye su propio README, instrucciones de instalación y configuración.
